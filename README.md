@@ -32,4 +32,7 @@ sudo  apt-get   install    silversearcher-ag
   imap <silent> <C-Y> <C-R><C-R>=LookUpwards()<CR>
 ```
 
+注意：我的<leader>是“,”
+
+使用方法： ",f" 唤醒，默认是当前路径，可以在命令行中增加路径
 
