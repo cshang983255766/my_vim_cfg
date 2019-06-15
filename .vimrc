@@ -39,6 +39,8 @@ call vundle#begin()
   Plugin 'git://github.com/jeetsukumaran/vim-buffergator.git'
   Plugin 'git://github.com/bling/vim-bufferline.git'
   Plugin 'git://github.com/Vimjas/vim-python-pep8-indent.git'
+  Plugin 'git://github.com/altercation/vim-colors-solarized.git'
+  Plugin 'git://github.com/vim-scripts/SuperTab.git'
 call vundle#end() " required
 filetype plugin indent on " required
 " To ignore plugin indent changes, instead use:
@@ -97,6 +99,9 @@ nmap <leader>bp :bp<cr>
 "撤销和恢复用win键
 nmap <C-z> u<cr>
 nmap <C-y> <C-r>
+
+"列编辑模式
+nmap <leader>v <C-v>
 
 " auto change working dir
 autocmd BufEnter * if expand("%:p:h") !~ '^/tmp' | silent! lcd %:p:h | endif
@@ -176,7 +181,10 @@ set novisualbell
 set t_vb=
 set tm=500
 
-syntax on  "语法高亮
+"let g:solarized_termcolors=256
+syntax enable  "语法高亮
+"set background=light
+"colorscheme solarized
 
 filetype on                              "检测文件的类型
 
