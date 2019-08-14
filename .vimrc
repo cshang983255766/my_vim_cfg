@@ -23,7 +23,6 @@ call vundle#begin()
   " Install L9 and avoid a Naming conflict if you've already installed a
   " different version somewhere else.
   " Plugin 'ascenator/L9', {'name': 'newL9'}
-  " All of your Plugins must be added before the following line
 
   Plugin 'git://github.com/scrooloose/nerdtree.git'
 
@@ -41,6 +40,9 @@ call vundle#begin()
   Plugin 'git://github.com/Vimjas/vim-python-pep8-indent.git'
   Plugin 'git://github.com/altercation/vim-colors-solarized.git'
   Plugin 'git://github.com/vim-scripts/SuperTab.git'
+  Plugin 'Yggdroot/LeaderF'
+  
+  " All of your Plugins must be added before the following line
 call vundle#end() " required
 filetype plugin indent on " required
 " To ignore plugin indent changes, instead use:
@@ -74,8 +76,15 @@ let g:startify_change_to_dir = 0
 nmap <F3> :NERDTreeToggle<cr>
 map <F4> :NERDTreeToggle<cr>:NERDTreeCWD<cr>
 
+"leaderf
+nmap ;f :LeaderfFunction<cr>
+nmap ;b :LeaderfBuffer<cr>
+nmap ;m :LeaderfMru<cr>
+
 "tagbar
 nmap <F8> :TagbarToggle<CR>
+let g:tagbar_width = 30
+let g:tagbar_autopreview = 1
 
 "去空行  
 " nnoremap <F2> :g/^\s*$/d<CR> 
@@ -131,20 +140,22 @@ imap <silent> <C-Y> <C-R><C-R>=LookUpwards()<CR>
 
 "ctrlp
 " ctrlp.vim setting
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-""<Leader>p搜索当前目录下文件
-let g:ctrlp_map = '<Leader>p'
+let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 "<Leader>搜索MRU文件
 nmap <Leader>e :CtrlPMRUFiles<CR>
 ""<Leader>h显示缓冲区文件，并可通过序号进行跳转
 nmap <Leader>h :CtrlPBuffer<CR>
+"工程目录较大时使用这个
+nmap <Leader>p :CtrlP getcwd()<cr>
+set wildignore+=*.so,*.class,*.swp,*.zip,*.png,*.jpg,*.gif,*.apk,*.dex,*.ap_,*/HTML/*,HTML/*,*.bin,*/bin/*,*.o,*.JPG
 "设置搜索时忽略的文件
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
     \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ 'link': 'some_bad_symbolic_links',
     \ }
-let g:ctrlp_working_path_mode = 0
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window_bottom = 1
 "修改QuickFix窗口显示的最大条目数
 let g:ctrlp_max_height = 30
@@ -188,6 +199,9 @@ syntax enable  "语法高亮
 
 filetype on                              "检测文件的类型
 
+"取消行号
+nmap <leader>h :set nonu<cr>
+nmap <leader>g :set nu<cr>
 " Custom setting
 set nu
 set tabstop=4
