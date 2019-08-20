@@ -32,8 +32,8 @@ call vundle#begin()
   
   Plugin 'git://github.com/rking/ag.vim.git'
 
-  Plugin 'git://github.com/vim-airline/vim-airline.git'
-  Plugin 'git://github.com/vim-airline/vim-airline-themes.git'
+  "Plugin 'git://github.com/vim-airline/vim-airline.git'
+  "Plugin 'git://github.com/vim-airline/vim-airline-themes.git'
   Plugin 'git://github.com/jlanzarotta/bufexplorer.git'
   Plugin 'git://github.com/jeetsukumaran/vim-buffergator.git'
   Plugin 'git://github.com/bling/vim-bufferline.git'
@@ -41,7 +41,9 @@ call vundle#begin()
   Plugin 'git://github.com/altercation/vim-colors-solarized.git'
   Plugin 'git://github.com/vim-scripts/SuperTab.git'
   Plugin 'Yggdroot/LeaderF'
-  
+  "Plugin 'vim-scripts/AutoComplPop'
+  "Plugin 'vim-scripts/OmniCppComplete'
+  Plugin 'vim-syntastic/syntastic'
   " All of your Plugins must be added before the following line
 call vundle#end() " required
 filetype plugin indent on " required
@@ -77,14 +79,20 @@ nmap <F3> :NERDTreeToggle<cr>
 map <F4> :NERDTreeToggle<cr>:NERDTreeCWD<cr>
 
 "leaderf
+"搜索本文件下的所有函数
 nmap ;f :LeaderfFunction<cr>
+"当次vim打开的所有文件
 nmap ;b :LeaderfBuffer<cr>
+"最近打开的文件
 nmap ;m :LeaderfMru<cr>
 
 "tagbar
 nmap <F8> :TagbarToggle<CR>
 let g:tagbar_width = 30
-let g:tagbar_autopreview = 1
+let g:tagbar_ctags_bin = '/home/cuishang/bin/ctags' "tagbar以来ctags插件
+let g:tagbar_autofocus = 1 "这是tagbar一打开，光标即在tagbar页面内，默认在vim打开的文件内
+let g:tagbar_sort = 0 "设置标签不排序，默认排序
+"autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen() "在某些情况下自动打开tagbar
 
 "去空行  
 " nnoremap <F2> :g/^\s*$/d<CR> 
@@ -185,6 +193,10 @@ inoremap jj <Esc>`^
 nmap <leader>w :w!<cr>
  " Fast quit
 nmap <leader>q :qa<cr>
+"退出当前文件
+nmap ;q :q<cr>
+"不保存强制退出当前文件
+nmap ;1 :q!<cr>
 
 " No annoying sound on errors
 set noerrorbells
@@ -212,8 +224,12 @@ set whichwrap+=<,>,h,l
 set splitright
 
 " map tab
-nmap tn :tabn<cr>
-nmap tp :tabp<cr>
+"nmap tn :tabn<cr>
+"nmap tp :tabp<cr>
+
+"buff中文件跳转
+nmap ;u :bp<cr>
+nmap ;n :bn<cr>
 
 " set tabstop=4                        "设置tab键为4个空格，
 " set ts=4
@@ -223,14 +239,14 @@ nmap tp :tabp<cr>
 " set showmatch                     "设置匹配模式，类似当输入一个左括号时会匹配相应的右括号     
 
 " 状态栏
-" set laststatus=2      " 总是显示状态栏
-" highlight StatusLine cterm=bold ctermfg=white ctermbg=black
-" 获取当前路径，将$HOME转化为~
-" function! CurDir()
-        " let curdir = substitute(getcwd(), $HOME, "~", "g")
-        " return curdir
-" endfunction
-" set statusline=[%n]\ %f%m%r%h\ \|\ \ pwd:\ %{CurDir()}\ \ \|%=\|\ %l,%c\ %p%%\ \|\ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\
+set laststatus=2      " 总是显示状态栏
+ highlight StatusLine cterm=bold ctermfg=white ctermbg=black
+ " 获取当前路径，将$HOME转化为~
+ function! CurDir()
+         let curdir = substitute(getcwd(), $HOME, "~", "g")
+         return curdir
+ endfunction
+ set statusline=[%n]\ %f%m%r%h\ \|\ \ pwd:\ %{CurDir()}\ \ \|%=\|\ %l,%c\ %p%%\ \|\ ascii=%b,hex=%b%{((&fenc==\"\")?\"\":\"\ \|\ \".&fenc)}\ \|\ %{$USER}\ @\ %{hostname()}\
 						  
 " set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%] "显示文件名：总行数，总的字符数
 " set ruler "在编辑过程中，在右下角显示光标位置的状态行
@@ -238,12 +254,13 @@ nmap tp :tabp<cr>
 " set airline to use powerline fonts
 let g:airline_powerline_fonts = 1
 let g:airline_theme='cool'
+"let g:airline#extensions#tabline#enabled = 1
 
 "set mouse=a "使能鼠标
 
 "设置tags
 set tags=~/.vim/systags
-set tags=~/as/m4/ctags
+set tags=/home/cuishang/P_hisiv811/sourcecode/trunk/Android_V811/.tags
 set tags=tags;
 
 function! UpdateCtags()
@@ -260,8 +277,6 @@ function! UpdateCtags()
     endif
     execute ":cd " . curdir
 endfunction
-
-nmap <F10> :call UpdateCtags()<CR>
 
 " comment and uncomment
 function! Docomment(comment)
